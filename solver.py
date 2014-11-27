@@ -63,7 +63,7 @@ def calculate_formula_graphwar(point_list):
     result = result[1:] + "+0.1*sin(60*x)" # remove the leading plus sign
     return result
 
-messagebox.showinfo("Select Point", "Press OK and left click on the top left corner and then the bottom right corner of the game axes.")
+messagebox.showinfo("Select Point", "Press OK and left click on the top left corner and then the bottom right corner of the game axes. Right click to cancel.")
 top_left = select_point()
 if top_left[0] == None: sys.exit()
 bottom_right = select_point()
@@ -72,7 +72,7 @@ scale_w, scale_h = (bottom_right[0] - top_left[0]) / game_w, (bottom_right[1] - 
 print("window size", bottom_right[0] - top_left[0], bottom_right[1] - top_left[1])
 
 while True:
-    messagebox.showinfo("Game Start", "Press OK and right click path points when your turn starts, starting with the player. Right click on the formula entry box to complete.")
+    messagebox.showinfo("Game Start", "Press OK and left click path points when your turn starts, starting with the player. Right click to complete point entry and copy result to clipboard. If no points selected, program exits.")
     
     # get start point
     start = select_point()
