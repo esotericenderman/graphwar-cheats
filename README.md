@@ -3,6 +3,8 @@ GraphingSolver
 
 Solver script for [Axis the Game](http://www.axisthegame.com/) and [GraphWar](http://www.graphwar.com/play.html)!
 
+![Screenshot](Screenshot.jpg)
+
 Axis and GraphWar are turn-based games where you fire artillery at other players using mathematical functions.
 
 This is a script that generates functions of your choice that go through any points you choose. Simply select the points, and it will generate a function that appears as line segments connecting them.
