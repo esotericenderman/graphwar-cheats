@@ -68,9 +68,32 @@ def calculate_function(points):
         slope = y_difference / x_difference
         constant = previous_y - slope * previous_x
 
-        function += f'+ ({slope}x + {constant}) / (1 + e^(-10(x - ({previous_x})))) - ({slope}x + {constant}) / (1 + e^(-10(x - ({current_x}))))'
+        if (slope == 0 and constant == 0):
+            pass
 
-    return function[1:]
+        slope_term = "" if slope == 0 else f"{slope}x"
+        constant_term = "" if constant == 0 else f" {"-" if constant < 0 else "+"} {abs(constant)}"
+
+        include_line_function_brackets = slope_term != 0 and constant != 0
+
+        left_line_function_bracket = "(" if include_line_function_brackets else ""
+        right_line_function_bracket = ")" if include_line_function_brackets else ""
+
+        line_function = f"{left_line_function_bracket}{slope_term}{constant_term}{right_line_function_bracket}"
+
+        def logistic_function_right_shift_term(x):
+            if x == 0:
+                return "x"
+
+            minus_x_term = f" {"+" if x < 0 else "-"} {abs(x)}"
+
+            return f"(x{minus_x_term})"
+
+        logistic_function_denominator = lambda x : f"(1 + e^(-10{logistic_function_right_shift_term(x)}))"
+
+        function += f"+ {line_function} / {logistic_function_denominator(previous_x)} - {line_function} / {logistic_function_denominator(current_x)}"
+
+    return "0" if function == "" else function[2:]
 
 while True:
     messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Right-click to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
