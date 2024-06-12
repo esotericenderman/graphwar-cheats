@@ -46,7 +46,14 @@ def select_point():
 def calculate_function(points):
     function = ""
 
-    for point_index in range(1, len(points)):
+    correct_sign = lambda x : f" {"-" if x < 0 else "+"} {abs(x)}" if x != 0 else ""
+    opposite_sign = lambda x : correct_sign(-x)
+
+    point_count = len(points)
+    is_line = point_count == 2
+    sum = 0
+
+    for point_index in range(1, point_count):
         current_point = points[point_index]
         previous_point = points[point_index - 1]
 
@@ -62,32 +69,46 @@ def calculate_function(points):
         slope = y_difference / x_difference
         constant = previous_y - slope * previous_x
 
-        if (slope == 0 and constant == 0):
+        zero_slope = slope == 0
+        zero_constant = constant == 0
+
+        if zero_slope and zero_constant:
             pass
 
-        slope_term = "" if slope == 0 else f"{slope}x"
-        constant_term = "" if constant == 0 else f" {"-" if constant < 0 else "+"} {abs(constant)}"
+        if is_line:
+            slope_term = "" if zero_slope else f"{slope}x"
+            constant_term = constant if zero_slope else correct_sign(constant)
 
-        include_line_function_brackets = slope_term != 0 and constant != 0
+            return f"{slope_term}{constant_term}"
 
-        left_line_function_bracket = "(" if include_line_function_brackets else ""
-        right_line_function_bracket = ")" if include_line_function_brackets else ""
+        shifted_absolute_value_term = lambda x : f"abs(x{opposite_sign(x)})"
 
-        line_function = f"{left_line_function_bracket}{slope_term}{constant_term}{right_line_function_bracket}"
+        first_shifted_absolute_value_term = None
+        is_first_pair = point_index == 1
 
-        def logistic_function_right_shift_term(x):
-            if x == 0:
-                return "x"
+        if is_first_pair:
+            first_shifted_absolute_value_term = "x"
+            previous_y = constant
+        else:
+            first_shifted_absolute_value_term = shifted_absolute_value_term(previous_x)
 
-            minus_x_term = f" {"+" if x < 0 else "-"} {abs(x)}"
+        second_shifted_absolute_value_term = None
+        is_last_pair = point_index == point_count - 1
 
-            return f"(x{minus_x_term})"
+        if is_last_pair:
+            second_shifted_absolute_value_term = " + x"
+            current_y = constant
+        else:
+            second_shifted_absolute_value_term = f" - {shifted_absolute_value_term(current_x)}"
 
-        logistic_function_denominator = lambda x : f"(1 + e^(-10{logistic_function_right_shift_term(x)}))"
+        sum += (previous_y + current_y) / 2
 
-        function += f"+ {line_function} / {logistic_function_denominator(previous_x)} - {line_function} / {logistic_function_denominator(current_x)}"
+        half_slope = slope / 2
+        half_slope_term = half_slope if is_first_pair else correct_sign(half_slope)
 
-    return "0" if function == "" else function[2:]
+        function += f"{half_slope_term}({first_shifted_absolute_value_term}{second_shifted_absolute_value_term})"
+
+    return "0" if function == "" else f"{function}{correct_sign(sum)}"
 
 while True:
     messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Left-click outside the plane to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
