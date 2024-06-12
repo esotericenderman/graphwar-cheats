@@ -41,16 +41,10 @@ def select_point():
     y_difference = maximum_pixel_y - pixel[1]
     y_scale = y_difference / window_height
 
-    result = (minimum_plane_x + (plane_width  * x_scale), minimum_plane_y + (plane_height * y_scale))
-
-    print(result)
-
-    return result
+    return (minimum_plane_x + (plane_width  * x_scale), minimum_plane_y + (plane_height * y_scale))
 
 def calculate_function(points):
     function = ""
-
-    print(points)
 
     for point_index in range(1, len(points)):
         current_point = points[point_index]
@@ -117,8 +111,6 @@ while True:
         exit()
 
     function = calculate_function(points)
-
-    print(function)
 
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
