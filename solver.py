@@ -96,7 +96,7 @@ def calculate_function(points):
     return "0" if function == "" else function[2:]
 
 while True:
-    messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Right-click to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
+    messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Left-click outside the plane to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
 
     start = select_point()
 
@@ -105,10 +105,16 @@ while True:
     while True:
         next_point = select_point()
 
-        if next_point[0] >= maximum_plane_x:
+        next_point_x = next_point[0]
+        next_point_y = next_point[1]
+
+        if next_point_x >= maximum_plane_x or next_point_x <= minimum_plane_x or next_point_y >= maximum_plane_y or next_point_y <= minimum_plane_y:
             break
 
         points.append(next_point)
+
+    if len(points) == 1:
+        exit()
 
     function = calculate_function(points)
 
