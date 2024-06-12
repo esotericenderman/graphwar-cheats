@@ -70,7 +70,7 @@ def calculate_function(points):
 
         function += f'+ ({slope}x + {constant}) / (1 + e^(-10(x - ({previous_x})))) - ({slope}x + {constant}) / (1 + e^(-10(x - ({current_x}))))'
 
-    return function
+    return function[1:]
 
 while True:
     messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Right-click to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
