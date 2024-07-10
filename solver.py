@@ -64,7 +64,7 @@ def calculate_formula_graphwar(point_list):
     start = point_list[0]
     x1, y1 = start[0], 0
     result = ""
-    
+
     normalize = lambda x: str(x) if "-" in str(x) else "+" + str(x)
 
     for point in points[1:]:
@@ -98,7 +98,7 @@ while True:
     start = select_point()
     start = (start[0] - top_left[0], start[1] - top_left[1])
     if start[0] == None: sys.exit()
-    
+
     # Get path points.
     points = [(start[0] / scale_width - game_width / 2, start[1] / scale_height - game_height / 2)]
     current_x = start[0]
@@ -115,7 +115,7 @@ while True:
         else: # Normal line segment.
             points.append((point[0] / scale_width - game_width / 2, point[1] / scale_height - game_height / 2))
             current_x = point[0]
-    
+
     if formula_mode == formula_modes["axis"]:
         formula = calculate_formula_axis(points)
     elif formula_mode == formula_modes["graphwar"]:
