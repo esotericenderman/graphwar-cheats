@@ -133,6 +133,8 @@ while True:
 
     function = calculate_function(points)
 
+    print(function)
+
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
     win32clipboard.SetClipboardText(function, win32clipboard.CF_TEXT)
