@@ -1,7 +1,7 @@
 GraphingSolver
 ==============
 
-Solver script for [GraphWar](http://www.graphwar.com)!
+Solver script for [GraphWar](https://www.graphwar.com/graphwar_1/index.html)!
 
 GraphWar is a turn-based game where you fire artillery at other players using mathematical functions.
 
