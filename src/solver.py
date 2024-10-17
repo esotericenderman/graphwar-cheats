@@ -1,9 +1,8 @@
 from tkinter import messagebox
 import mouse
 import win32clipboard
-import sympy as sp
+import sympy
 
-# Define plane dimensions
 plane_width = 50
 plane_height = 30
 
@@ -16,18 +15,15 @@ maximum_plane_x = half_plane_width
 minimum_plane_y = -half_plane_height
 maximum_plane_y = half_plane_height
 
-# Get the derivative level input
 derivative_level_string = input("Enter the derivative level: ")
 derivative_level = int(derivative_level_string) if derivative_level_string.isnumeric() else 0
 
 messagebox.showinfo("Specify Window Dimensions", "Press 'OK' and left-click on the top-right corner, and then the bottom-left corner of the plane. Right-click to cancel.")
 
-# Function to select pixel positions using mouse
 def select_pixel():
     mouse.wait(mouse.LEFT, (mouse.UP))
     return mouse.get_position()
 
-# Get the points for the plane
 top_right_point = select_pixel()
 bottom_left_point = select_pixel()
 
@@ -37,11 +33,9 @@ maximum_pixel_x = top_right_point[0]
 minimum_pixel_y = top_right_point[1]
 maximum_pixel_y = bottom_left_point[1]
 
-# Calculate window dimensions
 window_width = maximum_pixel_x - minimum_pixel_x
 window_height = maximum_pixel_y - minimum_pixel_y
 
-# Function to select points and scale them to plane coordinates
 def select_point():
     pixel = select_pixel()
 
@@ -53,13 +47,15 @@ def select_point():
 
     return (minimum_plane_x + (plane_width  * x_scale), minimum_plane_y + (plane_height * y_scale))
 
-# Function to calculate symbolic function for the points using sympy
 def calculate_function(points):
-    x = sp.symbols('x')  # Define x symbol for sympy
-    function = 0  # Initialize the function
+    function = ""
+
+    correct_sign = lambda x : f" {"-" if x < 0 else "+"} {abs(x)}" if x != 0 else ""
+    opposite_sign = lambda x : correct_sign(-x)
 
     point_count = len(points)
     is_line = point_count == 2
+    sum = 0
 
     for point_index in range(1, point_count):
         current_point = points[point_index]
@@ -77,20 +73,52 @@ def calculate_function(points):
         slope = y_difference / x_difference
         constant = previous_y - slope * previous_x
 
+        zero_slope = slope == 0
+        zero_constant = constant == 0
+
+        if zero_slope and zero_constant:
+            pass
+
         if is_line:
-            function = slope * x + constant  # Equation of the line
-            return function
+            slope_term = "" if zero_slope else f"{slope}x"
+            constant_term = constant if zero_slope else correct_sign(constant)
 
-        # For multi-point, add absolute value term (this is an approximation)
-        function += (slope * x + constant)
+            return f"{slope_term}{constant_term}"
 
-    return function if function != 0 else 0
+        shifted_absolute_value_term = lambda x : f"abs(x{opposite_sign(x)})"
 
-# Main loop to select points and calculate function
+        first_shifted_absolute_value_term = None
+        is_first_pair = point_index == 1
+
+        if is_first_pair:
+            first_shifted_absolute_value_term = "x"
+            previous_y = constant
+        else:
+            first_shifted_absolute_value_term = shifted_absolute_value_term(previous_x)
+
+        second_shifted_absolute_value_term = None
+        is_last_pair = point_index == point_count - 1
+
+        if is_last_pair:
+            second_shifted_absolute_value_term = " + x"
+            current_y = constant
+        else:
+            second_shifted_absolute_value_term = f" - {shifted_absolute_value_term(current_x)}"
+
+        sum += (previous_y + current_y) / 2
+
+        half_slope = slope / 2
+        half_slope_term = half_slope if is_first_pair else correct_sign(half_slope)
+
+        function += f"{half_slope_term}({first_shifted_absolute_value_term}{second_shifted_absolute_value_term})"
+
+    return "0" if function == "" else f"{function}{correct_sign(sum)}"
+
 while True:
     messagebox.showinfo("Game Start", "Press 'OK' and left-click points that the function should follow, starting with the player position. Left-click outside the plane to complete point entry and copy the result to your clipboard. If no points were selected, the program will exit.")
 
     start = select_point()
+
     points = [start]
 
     while True:
@@ -107,21 +135,11 @@ while True:
     if len(points) == 1:
         exit()
 
-    function = calculate_function(points)  # Generate the symbolic function
+    function = calculate_function(points)
 
-    # Differentiate the function if needed
-    if derivative_level > 0:
-        derivative = sp.diff(function, sp.symbols('x'), derivative_level)
-    else:
-        derivative = function
+    print(function)
 
-    # Convert the result to a string
-    derivative_str = str(derivative)
-
-    # Copy the result to the clipboard
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardText(derivative_str, win32clipboard.CF_TEXT)
+    win32clipboard.SetClipboardText(function, win32clipboard.CF_TEXT)
     win32clipboard.CloseClipboard()
-
-    print(derivative_str)  # Print the derivative to the console
