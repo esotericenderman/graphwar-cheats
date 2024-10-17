@@ -1,6 +1,7 @@
 from tkinter import messagebox
 import mouse
 import win32clipboard
+import sympy
 
 plane_width = 50
 plane_height = 30
@@ -13,6 +14,9 @@ maximum_plane_x = half_plane_width
 
 minimum_plane_y = -half_plane_height
 maximum_plane_y = half_plane_height
+
+derivative_level_string = input("Enter the derivative level: ")
+derivative_level = int(derivative_level_string) if derivative_level_string.isnumeric() else 0
 
 messagebox.showinfo("Specify Window Dimensions", "Press 'OK' and left-click on the top-right corner, and then the bottom-left corner of the plane. Right-click to cancel.")
 
