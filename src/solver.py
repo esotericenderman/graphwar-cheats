@@ -48,6 +48,8 @@ def select_point():
     return (minimum_plane_x + (plane_width  * x_scale), minimum_plane_y + (plane_height * y_scale))
 
 def calculate_function(points):
+    x = sympy.symbols("x")
+
     function = ""
 
     correct_sign = lambda x : f" {"-" if x < 0 else "+"} {abs(x)}" if x != 0 else ""
