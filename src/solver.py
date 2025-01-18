@@ -1,6 +1,17 @@
 from tkinter import messagebox
 import mouse
-import win32clipboard
+
+try:
+    import win32clipboard
+
+    def use_clipboard(string: str):
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardText(string, win32clipboard.CF_TEXT)
+        win32clipboard.CloseClipboard()
+except ModuleNotFoundError:
+    print("win32clipboard is not available. Skipping clipboard-related functionality.")
+
 import sympy
 
 plane_width = 50
@@ -52,7 +63,7 @@ def calculate_function(points):
 
     function = ""
 
-    correct_sign = lambda x : f" {"-" if x < 0 else "+"} {abs(x)}" if x != 0 else ""
+    correct_sign = lambda x: f" {'-' if x < 0 else '+'} {abs(x)}" if x != 0 else ""
     opposite_sign = lambda x : correct_sign(-x)
 
     point_count = len(points)
@@ -141,7 +152,7 @@ while True:
 
     print(function)
 
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardText(function, win32clipboard.CF_TEXT)
-    win32clipboard.CloseClipboard()
+    try:
+        use_clipboard(function)
+    except:
+        pass
