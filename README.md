@@ -21,3 +21,7 @@ Now a prompt will show up with further instructions. Dismiss the prompt and left
 When done, left click outside of the graph. Doing so during player selection exits the script.
 
 On Windows, the formula is now copied to the clipboard and can directly be inserted into the game. On other platforms, copy the function from the program's standard output.
+
+## Topics
+
+math solver mathematics mathematical-expressions maths solvers solve mathematical-programming graphwar graph-war
