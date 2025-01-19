@@ -26,9 +26,6 @@ maximum_plane_x = half_plane_width
 minimum_plane_y = -half_plane_height
 maximum_plane_y = half_plane_height
 
-derivative_level_string = input("Enter the derivative level: ")
-derivative_level = int(derivative_level_string) if derivative_level_string.isnumeric() else 0
-
 messagebox.showinfo("Specify Window Dimensions", "Press 'OK' and left-click on the top-right corner, and then the bottom-left corner of the plane. Right-click to cancel.")
 
 def select_pixel():
@@ -59,8 +56,6 @@ def select_point():
     return (minimum_plane_x + (plane_width  * x_scale), minimum_plane_y + (plane_height * y_scale))
 
 def calculate_function(points):
-    x = sympy.symbols("x")
-
     function = ""
 
     correct_sign = lambda x: f" {'-' if x < 0 else '+'} {abs(x)}" if x != 0 else ""
