@@ -8,7 +8,7 @@ This is a script that generates functions that go through any points you choose.
 
 ## Requirements
 
-This script requires `tkinter`, which is a library for creating and working with windows, as well as `mouse` & `win32clipboard`.
+This script requires `tkinter`, which is a library for creating and working with windows, as well as `mouse` & (optionally) `win32clipboard`.
 
 Automatic copying of the formula to the clipboard is only supported on Windows.
 
