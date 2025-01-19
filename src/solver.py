@@ -12,8 +12,6 @@ try:
 except ModuleNotFoundError:
     print("win32clipboard is not available. Skipping clipboard-related functionality.")
 
-import sympy
-
 plane_width = 50
 plane_height = 30
 
