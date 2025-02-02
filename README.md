@@ -1,5 +1,7 @@
 # Graphing Solver
 
+<sup>Forked from <a href="https://github.com/ADEHJKNTV/GraphingSolver">ADEHJKNTV/GraphingSolver</a></sup>
+
 [![Project Status: Completed](./assets/images/badges/status.svg)](./)
 
 > Solver script for [GraphWar](https://www.graphwar.com/graphwar_1/index.html)!
